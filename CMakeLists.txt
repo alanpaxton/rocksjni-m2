@@ -9,7 +9,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 include(CTest)
 enable_testing()
 
+add_executable(rocksjni-m2 main.cpp)
 include_directories(lib) # our code
+target_sources(rocksjni-m2 PRIVATE lib/jnim2mock.cpp)
 
 include(FetchContent)
 FetchContent_Declare(
@@ -23,7 +25,6 @@ FetchContent_MakeAvailable(googletest)
 
 enable_testing()
 
-add_executable(rocksjni-m2 main.cpp)
 target_link_libraries(rocksjni-m2 PRIVATE gtest gtest_main) # link google test to this executable
 include(GoogleTest)
 
