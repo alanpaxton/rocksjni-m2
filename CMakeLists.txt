@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(rocksjni-m2 VERSION 0.1.0)
 
+# Use C++11
+set(CMAKE_CXX_STANDARD 11)
+# Require (at least) it
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 include(CTest)
 enable_testing()
 
