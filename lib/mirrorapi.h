@@ -20,6 +20,8 @@ public:
 
     APIIterator *newIterator();
     APIColumnFamilyHandle *openColumnFamily(const char *name);
+
+    long db_use_count() { return db.use_count(); };
 };
 
 class APIIterator
@@ -30,6 +32,9 @@ class APIIterator
     std::unique_ptr<Iterator> it;
 
     APIIterator(std::shared_ptr<DB> db, Iterator *iterator) : db(db), it(std::unique_ptr<Iterator>(iterator)){};
+
+public:
+    long db_use_count() { return db.use_count(); };
 };
 
 class APIColumnFamilyHandle
