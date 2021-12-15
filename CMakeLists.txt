@@ -11,7 +11,7 @@ enable_testing()
 
 add_executable(rocksjni-m2 main.cpp)
 include_directories(lib) # our code
-target_sources(rocksjni-m2 PRIVATE lib/jnim2mock.cpp)
+target_sources(rocksjni-m2 PRIVATE lib/jniapi.cpp lib/mirrorapi.cpp lib/rocksapi.cpp)
 
 include(FetchContent)
 FetchContent_Declare(

@@ -2,7 +2,7 @@
 #include <memory>
 #include <gtest/gtest.h>
 
-#include "lib/jnim2mock.h"
+#include "lib/jniapi.h"
 
 // TODO - will this work for those objects that Rocks C++ API gives us pointers to (but that we don't own!)
 // -- see Java -> org.rocksdb.AbstractImmutableNativeReference#disOwnNativeHandle
@@ -26,27 +26,29 @@ class APIIterator_NonOwned {
 TEST(jnim2mock, useCount)
 {
 
-  auto *japi_db = API::openDB("/tmp/test-db1");
-  jlong japi_db_handle = reinterpret_cast<jlong>(japi_db);
+  auto japi_db_handle = API::openDB("/tmp/test-db1");
+  auto *japi_db = reinterpret_cast<APIDB *>(japi_db_handle);
 
   GTEST_ASSERT_EQ(japi_db->db.use_count(), 1);
 
-  auto *japi_it1 = API::newIterator(japi_db_handle);
+  auto japi_it1_handle = API::newIterator(japi_db_handle);
+  auto *japi_it1 = reinterpret_cast<APIIterator *>(japi_it1_handle);
   GTEST_ASSERT_EQ(japi_db->db.use_count(), 2);
 
-  auto *japi_it2 = API::newIterator(japi_db_handle);
-  GTEST_ASSERT_EQ(japi_db->db.use_count(), 3);
-  GTEST_ASSERT_EQ(japi_it1->db.use_count(), 3);
-  GTEST_ASSERT_EQ(japi_it2->db.use_count(), 3);
+      auto japi_it2_handle = API::newIterator(japi_db_handle);
+      auto *japi_it2 = reinterpret_cast<APIIterator *>(japi_it2_handle);
+      GTEST_ASSERT_EQ(japi_db->db.use_count(), 3);
+      GTEST_ASSERT_EQ(japi_it1->db.use_count(), 3);
+      GTEST_ASSERT_EQ(japi_it2->db.use_count(), 3);
 
-  // now cleanup
-  delete japi_it1;
-  GTEST_ASSERT_EQ(japi_db->db.use_count(), 2);
-  GTEST_ASSERT_EQ(japi_it1->db.use_count(), 2);
-  GTEST_ASSERT_EQ(japi_it2->db.use_count(), 2);
+      // now cleanup
+      delete japi_it1;
+      GTEST_ASSERT_EQ(japi_db->db.use_count(), 2);
+      GTEST_ASSERT_EQ(japi_it1->db.use_count(), 2);
+      GTEST_ASSERT_EQ(japi_it2->db.use_count(), 2);
 
-  delete japi_it2;
-  GTEST_ASSERT_EQ(japi_db->db.use_count(), 1);
+      delete japi_it2;
+      GTEST_ASSERT_EQ(japi_db->db.use_count(), 1);
 }
 
 int main(int argc, char *argv[])
