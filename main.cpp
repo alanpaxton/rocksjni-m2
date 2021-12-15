@@ -1,5 +1,8 @@
 #include <iostream>
 #include <memory>
+#include <gtest/gtest.h>
+
+#include "lib/jnim2mock.h"
 
 // TODO - will this work for those objects that Rocks C++ API gives us pointers to (but that we don't own!)
 // -- see Java -> org.rocksdb.AbstractImmutableNativeReference#disOwnNativeHandle
@@ -114,10 +117,13 @@ void testUseCount()
   std::cout << "DONE" << std::endl;
 }
 
-int main(int argc, char *argv[]) {
+TEST(jnim2mock, add)
+{
+  GTEST_ASSERT_EQ(add(10, 22), 33);
+}
 
-    std::cout << "Hello, world!\n";
-    testUseCount();
-
-    return 0;
+int main(int argc, char *argv[])
+{
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
 }
