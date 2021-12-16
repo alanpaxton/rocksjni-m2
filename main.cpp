@@ -23,7 +23,7 @@ class APIIterator_NonOwned {
 // - perhaps a force flag? throw an exception if false, if true force shutdown
 // -
 
-TEST(jnim2mock, useCount)
+TEST(jniapi, useCount)
 {
 
   auto japi_db_handle = API::openDB("/tmp/test-db1");
